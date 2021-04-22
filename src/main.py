@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User
+from models import db, User, Character, Planet, Vehicle
 #from models import Person
 
 app = Flask(__name__)
@@ -31,7 +31,7 @@ def sitemap():
     return generate_sitemap(app)
 
 @app.route('/user', methods=['GET'])
-def handle_hello():
+def handle_users():
     users = User.query.all()
     response_body = {
         "msg": "Hello, this is your GET /user response ",
@@ -39,6 +39,37 @@ def handle_hello():
     }
 
     return jsonify(response_body), 200
+
+@app.route('/character', methods=['GET'])
+def handle_characters():
+    characters = Character.query.all()
+    response_body = {
+        "msg": "These are characters",
+        "characters": list(map(lambda x:x.serialize(), characters))
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/planet', methods=['GET'])
+def handle_planets():
+    planets = Planet.query.all()
+    response_body = {
+        "msg": "These are planets", 
+        "planets": list(map(lambda x:x.serialize(), planets))
+    }
+
+    return jsonify(response_body), 200
+
+@app.route('/vehicle', methods=['GET'])
+def handle_vehicles():
+    vehicles = Vehicle.query.all()
+    response_body = {
+        "msg": "These are vehicles", 
+        "vehicles": list(map(lambda x:x.serialize(), vehicles))
+    }
+
+    return jsonify(response_body), 200
+
 
 # this only runs if `$ python src/main.py` is executed
 if __name__ == '__main__':

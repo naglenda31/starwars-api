@@ -36,7 +36,9 @@ class User(db.Model):
             "id": self.id,
             "name": self.name,
             "email": self.email,
-            "characters": list(map(lambda x:x.serialize(),self.characters))
+            "characters": list(map(lambda x:x.serialize(),self.characters)),
+            "planets": list(map(lambda x:x.serialize(), self.planets)),
+            "vehicles": list(map(lambda x:x.serialize(), self.vehicles))
             # do not serialize the password, its a security breach
         }
 

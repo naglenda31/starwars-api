@@ -21,6 +21,7 @@ class User(db.Model):
     __tablename__ = "users"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(120), unique=True, nullable=False)
+    username = db.Column(db.String(120), unique=True, nullable=False)
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
@@ -35,10 +36,11 @@ class User(db.Model):
         return {
             "id": self.id,
             "name": self.name,
+            "username": self.username,
             "email": self.email,
-            "characters": list(map(lambda x:x.serialize(),self.characters)),
-            "planets": list(map(lambda x:x.serialize(), self.planets)),
-            "vehicles": list(map(lambda x:x.serialize(), self.vehicles))
+            "favorite_characters": list(map(lambda x:x.serialize(),self.characters)),
+            "favorite_planets": list(map(lambda x:x.serialize(), self.planets)),
+            "favorite_vehicles": list(map(lambda x:x.serialize(), self.vehicles))
             # do not serialize the password, its a security breach
         }
 

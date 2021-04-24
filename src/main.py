@@ -55,25 +55,43 @@ def login():
     access_token = create_access_token(identity=username)
     return jsonify(access_token=access_token)
 
-
-@app.route('/user', methods=['PUT'])
+#Endpoint to retrieve all users
+@app.route('/user', methods=['GET'])
 def handle_users():
     users = User.query.all()
     response_body = {
-        "msg": "Hello, this is your GET /user response ",
+        "msg": "These are all users",
         "users": list(map(lambda x:x.serialize(),users))
     }
 
     return jsonify(response_body), 200
 
+#Endpoint to retrieve one user by id
+@app.route('/user/<id>', methods=['GET'])
+def get_user_by_id(id):
+    user = User.query.get(id).serialize()
+    response_body = {
+        "user": user
+    }
+   
+    return jsonify(response_body), 200
+
+#Endpoint to add to favorites
 @app.route('/user', methods=['PUT'])
 def update_user_favorites():
     user_id = request.json.get("user_id", None)
-    #add if variable is None, show error
     resource_id = request.json.get("id", None)
     resource_type = request.json.get("type", None)
 
+    if user_id is None:
+        return jsonify({"msg": "No user id specified"}), 401
+    if resource_id is None:
+        return jsonify({"msg": "No resource id specified"}), 401
+    if resource_type is None:
+        return jsonify({"msg": "No resource type specified"}), 401
+
     user = User.query.get(user_id)
+
 
     if resource_type == "character":
         resource = Character.query.get(resource_id)
@@ -86,6 +104,8 @@ def update_user_favorites():
         resource = Vehicle.query.get(resource_id)
         user.vehicles.append(resource)
 
+    db.session.commit()
+
     response_body = {
         "msg": "Resource added successfully",
         "user": user.serialize()
@@ -93,8 +113,9 @@ def update_user_favorites():
 
     return jsonify(response_body), 200
 
+#Endpoint to retrieve all characters
 @app.route('/character', methods=['GET'])
-def handle_characters():
+def get_characters():
     characters = Character.query.all()
     response_body = {
         "msg": "These are characters",
@@ -103,8 +124,20 @@ def handle_characters():
 
     return jsonify(response_body), 200
 
+#Endpoint to retrieve one character by id
+@app.route('/character/<id>', methods=['GET'])
+def get_character_by_id(id):
+    character = Character.query.get(id).serialize()
+    response_body = {
+        "msg": "This is a character",
+        "character": character
+    }
+   
+    return jsonify(response_body), 200
+
+#Endpoint to retrieve planets
 @app.route('/planet', methods=['GET'])
-def handle_planets():
+def get_planets():
     planets = Planet.query.all()
     response_body = {
         "msg": "These are planets", 
@@ -113,12 +146,35 @@ def handle_planets():
 
     return jsonify(response_body), 200
 
+#Endpoint to retrieve one planet by id
+@app.route('/planet/<id>', methods=['GET'])
+def get_planet_by_id(id):
+    planet = Planet.query.get(id).serialize()
+    response_body = {
+        "msg": "This is a planet", 
+        "planet": planet
+    }
+
+    return jsonify(response_body), 200
+
+#Endpoint to retrieve all vehicles
 @app.route('/vehicle', methods=['GET'])
-def handle_vehicles():
+def get_vehicles():
     vehicles = Vehicle.query.all()
     response_body = {
         "msg": "These are vehicles", 
         "vehicles": list(map(lambda x:x.serialize(), vehicles))
+    }
+
+    return jsonify(response_body), 200
+
+#Endpoint to retrieve one vehicle by id
+@app.route('/vehicle/<id>', methods=['GET'])
+def get_vehicle_by_id(id):
+    vehicle = Vehicle.query.get(id).serialize()
+    response_body = {
+        "msg": "This is a vehicle", 
+        "vehicle": vehicle
     }
 
     return jsonify(response_body), 200

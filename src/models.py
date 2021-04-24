@@ -2,9 +2,9 @@ from flask_sqlalchemy import SQLAlchemy
 
 db = SQLAlchemy()
 
-favorite_characters = db.Table('user_characters', db.Model.metadata,
+favorite_people = db.Table('user_people', db.Model.metadata,
     db.Column('user_id', db.Integer, db.ForeignKey('users.id'), primary_key=True),
-    db.Column('character_id', db.Integer, db.ForeignKey('characters.id'), primary_key=True)
+    db.Column('person_id', db.Integer, db.ForeignKey('people.id'), primary_key=True)
 )
 
 favorite_planets = db.Table('user_planets', db.Model.metadata,
@@ -25,7 +25,7 @@ class User(db.Model):
     email = db.Column(db.String(120), unique=True, nullable=False)
     password = db.Column(db.String(80), unique=False, nullable=False)
     is_active = db.Column(db.Boolean(), unique=False, nullable=False)
-    characters = db.relationship("Character", secondary=favorite_characters)
+    people = db.relationship("Person", secondary=favorite_people)
     planets = db.relationship("Planet", secondary=favorite_planets)
     vehicles = db.relationship("Vehicle", secondary=favorite_vehicles)
 
@@ -38,15 +38,15 @@ class User(db.Model):
             "name": self.name,
             "username": self.username,
             "email": self.email,
-            "favorite_characters": list(map(lambda x:x.serialize(),self.characters)),
+            "favorite_people": list(map(lambda x:x.serialize(),self.people)),
             "favorite_planets": list(map(lambda x:x.serialize(), self.planets)),
             "favorite_vehicles": list(map(lambda x:x.serialize(), self.vehicles))
             # do not serialize the password, its a security breach
         }
 
 
-class Character(db.Model):
-    __tablename__ = "characters"
+class Person(db.Model):
+    __tablename__ = "people"
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(250), nullable=False)
     height = db.Column(db.String(10))
@@ -60,7 +60,7 @@ class Character(db.Model):
     photo_url = db.Column(db.String(250))
 
     def __repr__(self):
-        return '<Character %r>' % self.name
+        return '<Person %r>' % self.name
 
     def serialize(self):
         return {
@@ -72,7 +72,7 @@ class Character(db.Model):
 class Planet(db.Model):
     __tablename__ = "planets"
     id = db.Column(db.Integer, primary_key=True)
-    characters = db.relationship("Character", backref='homeworld', lazy=True)
+    characters = db.relationship("Person", backref='homeworld', lazy=True)
     name = db.Column(db.String(250), nullable=False)
     diameter = db.Column(db.String(250))
     rotation_period = db.Column(db.String(250))

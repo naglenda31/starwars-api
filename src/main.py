@@ -8,7 +8,7 @@ from flask_swagger import swagger
 from flask_cors import CORS
 from utils import APIException, generate_sitemap
 from admin import setup_admin
-from models import db, User, Character, Planet, Vehicle
+from models import db, User, Person, Planet, Vehicle
 
 from flask_jwt_extended import create_access_token
 from flask_jwt_extended import get_jwt_identity
@@ -95,9 +95,9 @@ def update_user_favorites():
     if User is None:
         return jsonify({"msg": "No user was found"}), 400
 
-    if resource_type == "character":
-        resource = Character.query.get(resource_id)
-        user.characters.append(resource)
+    if resource_type == "person":
+        resource = Person.query.get(resource_id)
+        user.people.append(resource)
     if resource_type == "planet":
         resource = Planet.query.get(resource_id)
         user.planets.append(resource)
@@ -116,23 +116,23 @@ def update_user_favorites():
     return jsonify(response_body), 200
 
 #Endpoint to retrieve all characters
-@app.route('/character', methods=['GET'])
-def get_characters():
-    characters = Character.query.all()
+@app.route('/people', methods=['GET'])
+def get_people():
+    people = Person.query.all()
     response_body = {
         "msg": "These are characters",
-        "characters": list(map(lambda x:x.serialize(), characters))
+        "characters": list(map(lambda x:x.serialize(), people))
     }
 
     return jsonify(response_body), 200
 
 #Endpoint to retrieve one character by id
-@app.route('/character/<id>', methods=['GET'])
-def get_character_by_id(id):
-    character = Character.query.get(id)
+@app.route('/people/<id>', methods=['GET'])
+def get_person_by_id(id):
+    person = Person.query.get(id)
     response_body = {
         "msg": "This is a character",
-        "character": character.serialize()
+        "character": person.serialize()
     }
    
     return jsonify(response_body), 200

@@ -69,9 +69,9 @@ def handle_users():
 #Endpoint to retrieve one user by id
 @app.route('/user/<id>', methods=['GET'])
 def get_user_by_id(id):
-    user = User.query.get(id).serialize()
+    user = User.query.get(id)
     response_body = {
-        "user": user
+        "user": user.serialize()
     }
    
     return jsonify(response_body), 200
@@ -84,14 +84,16 @@ def update_user_favorites():
     resource_type = request.json.get("type", None)
 
     if user_id is None:
-        return jsonify({"msg": "No user id specified"}), 401
+        return jsonify({"msg": "No user id specified"}), 400
     if resource_id is None:
-        return jsonify({"msg": "No resource id specified"}), 401
+        return jsonify({"msg": "No resource id specified"}), 400
     if resource_type is None:
-        return jsonify({"msg": "No resource type specified"}), 401
+        return jsonify({"msg": "No resource type specified"}), 400
 
     user = User.query.get(user_id)
 
+    if User is None:
+        return jsonify({"msg": "No user was found"}), 400
 
     if resource_type == "character":
         resource = Character.query.get(resource_id)
@@ -127,10 +129,10 @@ def get_characters():
 #Endpoint to retrieve one character by id
 @app.route('/character/<id>', methods=['GET'])
 def get_character_by_id(id):
-    character = Character.query.get(id).serialize()
+    character = Character.query.get(id)
     response_body = {
         "msg": "This is a character",
-        "character": character
+        "character": character.serialize()
     }
    
     return jsonify(response_body), 200
@@ -149,10 +151,10 @@ def get_planets():
 #Endpoint to retrieve one planet by id
 @app.route('/planet/<id>', methods=['GET'])
 def get_planet_by_id(id):
-    planet = Planet.query.get(id).serialize()
+    planet = Planet.query.get(id)
     response_body = {
         "msg": "This is a planet", 
-        "planet": planet
+        "planet": planet.serialize()
     }
 
     return jsonify(response_body), 200
@@ -171,10 +173,10 @@ def get_vehicles():
 #Endpoint to retrieve one vehicle by id
 @app.route('/vehicle/<id>', methods=['GET'])
 def get_vehicle_by_id(id):
-    vehicle = Vehicle.query.get(id).serialize()
+    vehicle = Vehicle.query.get(id)
     response_body = {
         "msg": "This is a vehicle", 
-        "vehicle": vehicle
+        "vehicle": vehicle.serialize()
     }
 
     return jsonify(response_body), 200

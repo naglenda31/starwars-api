@@ -56,7 +56,7 @@ def login():
     return jsonify(access_token=access_token)
 
 #Endpoint to retrieve all users
-@app.route('/user', methods=['GET'])
+@app.route('/users', methods=['GET'])
 def handle_users():
     users = User.query.all()
     response_body = {
@@ -67,7 +67,7 @@ def handle_users():
     return jsonify(response_body), 200
 
 #Endpoint to retrieve one user by id
-@app.route('/user/<id>', methods=['GET'])
+@app.route('/users/<int:id>', methods=['GET'])
 def get_user_by_id(id):
     user = User.query.get(id)
     response_body = {
@@ -77,7 +77,7 @@ def get_user_by_id(id):
     return jsonify(response_body), 200
 
 #Endpoint to add to favorites
-@app.route('/user', methods=['PUT'])
+@app.route('/users', methods=['PUT'])
 def update_user_favorites():
     user_id = request.json.get("user_id", None)
     resource_id = request.json.get("id", None)
@@ -121,24 +121,24 @@ def get_people():
     people = Person.query.all()
     response_body = {
         "msg": "These are characters",
-        "characters": list(map(lambda x:x.serialize(), people))
+        "people": list(map(lambda x:x.serialize(), people))
     }
 
     return jsonify(response_body), 200
 
 #Endpoint to retrieve one character by id
-@app.route('/people/<id>', methods=['GET'])
+@app.route('/people/<int:id>', methods=['GET'])
 def get_person_by_id(id):
     person = Person.query.get(id)
     response_body = {
         "msg": "This is a character",
-        "character": person.serialize()
+        "person": person.serialize()
     }
    
     return jsonify(response_body), 200
 
 #Endpoint to retrieve planets
-@app.route('/planet', methods=['GET'])
+@app.route('/planets', methods=['GET'])
 def get_planets():
     planets = Planet.query.all()
     response_body = {
@@ -149,7 +149,7 @@ def get_planets():
     return jsonify(response_body), 200
 
 #Endpoint to retrieve one planet by id
-@app.route('/planet/<id>', methods=['GET'])
+@app.route('/planets/<int:id>', methods=['GET'])
 def get_planet_by_id(id):
     planet = Planet.query.get(id)
     response_body = {
@@ -160,7 +160,7 @@ def get_planet_by_id(id):
     return jsonify(response_body), 200
 
 #Endpoint to retrieve all vehicles
-@app.route('/vehicle', methods=['GET'])
+@app.route('/vehicles', methods=['GET'])
 def get_vehicles():
     vehicles = Vehicle.query.all()
     response_body = {
@@ -171,7 +171,7 @@ def get_vehicles():
     return jsonify(response_body), 200
 
 #Endpoint to retrieve one vehicle by id
-@app.route('/vehicle/<id>', methods=['GET'])
+@app.route('/vehicles/<int:id>', methods=['GET'])
 def get_vehicle_by_id(id):
     vehicle = Vehicle.query.get(id)
     response_body = {

@@ -38,7 +38,7 @@ class User(db.Model):
             "name": self.name,
             "username": self.username,
             "email": self.email,
-            "favorite_people": list(map(lambda x:x.serialize(),self.people)),
+            "favorite_people": list(map(lambda x:x.serialize(), self.people)),
             "favorite_planets": list(map(lambda x:x.serialize(), self.planets)),
             "favorite_vehicles": list(map(lambda x:x.serialize(), self.vehicles))
             # do not serialize the password, its a security breach
@@ -66,7 +66,15 @@ class Person(db.Model):
         return {
             "id": self.id,
             "name": self.name,
-            "homeworld": self.homeworld.name
+            "height": self.height,
+            "mass": self.mass,
+            "hair_color": self.hair_color,
+            "skin_color": self.skin_color,
+            "eye_color": self.eye_color,
+            "birth_year": self.birth_year,
+            "gender": self.gender,
+            "homeworld": self.homeworld.name,
+            "photo_url": self.photo_url
         }
 
 class Planet(db.Model):
@@ -90,7 +98,16 @@ class Planet(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "diameter": self.diameter,
+            "rotation_period": self.rotation_period,
+            "orbital_period": self.orbital_period,
+            "gravity": self.gravity,
+            "population": self.population,
+            "climate": self.climate,
+            "terrain": self.terrain,
+            "surface_water": self.surface_water,
+            "photo_url": self.photo_url
         }
 
 class Vehicle(db.Model):
@@ -115,5 +132,16 @@ class Vehicle(db.Model):
     def serialize(self):
         return {
             "id": self.id,
-            "name": self.name
+            "name": self.name,
+            "model": self.model,
+            "vehicle_class": self.vehicle_class,
+            "manufacturer": self.manufacturer,
+            "cost_in_credits": self.cost_in_credits,
+            "length": self.length,
+            "crew": self.crew,
+            "passengers": self.passengers,
+            "max_atmosphering_speed": self.max_atmosphering_speed,
+            "cargo_capacity": self.cargo_capacity,
+            "consumables": self.consumables,
+            "photo_url": self.photo_url
         }

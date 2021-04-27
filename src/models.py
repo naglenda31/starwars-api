@@ -57,6 +57,7 @@ class Person(db.Model):
     birth_year = db.Column(db.String(10))
     gender = db.Column(db.String(10))
     homeworld_id = db.Column(db.Integer, db.ForeignKey("planets.id"))
+    description = db.Column(db.String(800))
     photo_url = db.Column(db.String(250))
 
     def __repr__(self):
@@ -74,6 +75,7 @@ class Person(db.Model):
             "birth_year": self.birth_year,
             "gender": self.gender,
             "homeworld": self.homeworld.name,
+            "description": self.description,
             "photo_url": self.photo_url
         }
 
@@ -90,6 +92,7 @@ class Planet(db.Model):
     climate = db.Column(db.String(250))
     terrain = db.Column(db.String(250))
     surface_water = db.Column(db.String(250))
+    description = db.Column(db.String(800))
     photo_url = db.Column(db.String(250))
 
     def __repr__(self):
@@ -107,6 +110,7 @@ class Planet(db.Model):
             "climate": self.climate,
             "terrain": self.terrain,
             "surface_water": self.surface_water,
+            "description": self.description,
             "photo_url": self.photo_url
         }
 
@@ -124,6 +128,7 @@ class Vehicle(db.Model):
     max_atmosphering_speed = db.Column(db.String(250))
     cargo_capacity = db.Column(db.String(250))
     consumables = db.Column(db.String(250))
+    description = db.Column(db.String(800))
     photo_url = db.Column(db.String(250))
 
     def __repr__(self):
@@ -143,5 +148,6 @@ class Vehicle(db.Model):
             "max_atmosphering_speed": self.max_atmosphering_speed,
             "cargo_capacity": self.cargo_capacity,
             "consumables": self.consumables,
+            "description": self.description,
             "photo_url": self.photo_url
         }
